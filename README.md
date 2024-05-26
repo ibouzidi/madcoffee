@@ -22,6 +22,10 @@ Ajout d'une nouvelle ligne sur le fichier `host` de la machine hôte pour une re
 
 - Accès au site wordpress : [wordpress.local](http://wordpress.local/)
 
+- Se connecter avec :
+  - `admin`
+  - `V(TkG%c1(fzXeaXTAs`
+
 **Structure:**
 ~~~
 root@wordpress:~/madcoffee# tree
