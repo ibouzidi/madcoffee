@@ -16,6 +16,12 @@ Ce projet permet de déployer une instance WordPress pour MadCoffee avec Docker 
 
 ### Démarrage
 
+Ajout d'une nouvelle ligne sur le fichier `host` de la machine hôte pour une redirection : 
+
+- `2a03:5840:111:1024:58:87ff:fe9b:1d95 wordpress.local`
+
+- Accès au site wordpress : [wordpress.local](http://wordpress.local/)
+
 **Structure:**
 ~~~
 root@wordpress:~/madcoffee# tree
