@@ -56,4 +56,4 @@ volumes:
     
 networks:
   wp_app:
-    name: wp_app
+    driver: bridge
