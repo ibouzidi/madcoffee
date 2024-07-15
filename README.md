@@ -24,7 +24,7 @@ Ajout d'une nouvelle ligne sur le fichier `host` de la machine hôte pour une re
 
 - Se connecter avec :
   - `admin`
-  - `V(TkG%c1(fzXeaXTAs`
+  - `P@ssw0rd`
 
 **Structure:**
 ~~~
