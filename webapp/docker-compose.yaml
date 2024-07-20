@@ -7,9 +7,8 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - wordpress_network
+      - wp_app
     restart: always
-
   wordpress:
     depends_on:
       - db
@@ -19,11 +18,13 @@ services:
     volumes:
       - wordpress_data:/var/www/html
     networks:
-      - wordpress_network
+      - wp_app
     restart: always
 
   nginx:
-    image: nginx:alpine
+    build: 
+      context: .
+      dockerfile: ./nginx/Dockerfile 
     container_name: wordpress_nginx
     depends_on:
       - wordpress
@@ -31,16 +32,28 @@ services:
       - "80:80"
     volumes:
       - wordpress_data:/var/www/html
-      - ./nginx:/etc/nginx/conf.d
+      - nginx_logs:/var/log/nginx
     networks:
-      - wordpress_network
+      - wp_app
     restart: always
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - nginx_logs:/var/log/nginx
+      - ./config/promtail.yaml:/etc/promtail/promtail.yaml
+    command: -config.file=/etc/promtail/promtail.yaml
+    depends_on:
+      - nginx
+    networks:
+      - wp_app
 
 volumes:
   db_data:
   wordpress_data:
-
+  nginx_logs:
+    
 networks:
-  wordpress_network:
+  wp_app:
     driver: bridge
-
