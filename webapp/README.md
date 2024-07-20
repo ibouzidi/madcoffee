@@ -6,51 +6,71 @@
 - Idris BOUZIDI
 - Benoit JACQUET
 
-### Déscription
+### Description
 
-Ce projet permet de déployer une instance WordPress pour MadCoffee avec Docker et Docker Compose. Il comprend trois conteneurs :
+Ce projet permet de déployer une instance WordPress pour MadCoffee en utilisant Docker et Docker Compose. Il comprend deux répertoires principaux :
 
-- `db` : conteneur MySQL pour la base de données WordPress.
-- `wordpress` : conteneur WordPress avec PHP 8.0 FPM et Alpine Linux.
-- `nginx` : conteneur Nginx pour le serveur web.
+-   **`siem`** : Contient la configuration et le déploiement pour les outils de surveillance.
+-   **`webapp`** : Contient la configuration et le déploiement pour l'instance WordPress.
 
+### Structure du Projet
+
+**Racine du projet :**
+~~~~
+├── siem
+│   ├── config
+│   │   ├── grafana-datasources.yml
+│   │   ├── loki.yaml
+│   │   └── promtail.yaml
+│   └── docker-compose.yaml
+└── webapp
+    ├── config
+    │   └── promtail.yaml
+    ├── docker-compose.yaml
+    ├── nginx
+    │   ├── default.conf
+    │   └── Dockerfile
+    └── README.md` 
+~~~~
 ### Démarrage
 
-Ajout d'une nouvelle ligne sur le fichier `host` de la machine hôte pour une redirection : 
+Ajoutez la ligne suivante au fichier `hosts` de la machine hôte pour la redirection :
 
-- `2a03:5840:111:1024:58:87ff:fe9b:1d95 wordpress.local`
+-   `2a03:5840:111:1024:58:87ff:fe9b:1d95 wordpress.local`
 
-- Accès au site wordpress : [wordpress.local](http://wordpress.local/)
+Accédez au site WordPress via : [wordpress.local](http://wordpress.local/)
 
-- Se connecter avec :
-  - `admin`
-  - `V(TkG%c1(fzXeaXTAs`
+Connectez-vous avec :
 
-**Structure:**
-~~~
-root@wordpress:~/madcoffee# tree
-.
-├── docker-compose.yml
-├── nginx
-│   └── default.conf
-└── README.md
-~~~
+-   **Utilisateur** : `user0`
+-   **Mot de passe** : `P@ssw0rd`
 
--   `docker-compose.yml`  : fichier de configuration pour le déploiement de l'instance WordPress pour MadCoffee avec Docker et Docker Compose.
--   `nginx/default.conf`  : fichier de configuration pour le serveur web Nginx.
-- `.env` (caché) : contient les informations d'authentification de la base de données MySQL et du site Wordpress.
--   `README.md`  : fichier de documentation pour le projet, contenant des informations sur le déploiement de l'instance WordPress pour MadCoffee avec Docker et Docker Compose.
+### Contenu des Répertoires
+
+-   **`siem`** :
+    
+    -   `config/grafana-datasources.yml` : Configuration des sources de données pour Grafana.
+    -   `config/loki.yaml` : Configuration de Loki pour la collecte des logs.
+    -   `config/promtail.yaml` : Configuration de Promtail pour l'envoi des logs à Loki.
+    -   `docker-compose.yaml` : Configuration Docker Compose pour le déploiement des outils de surveillance.
+-   **`webapp`** :
+    
+    -   `config/promtail.yaml` : Configuration de Promtail pour l'envoi des logs à Loki.
+    -   `docker-compose.yaml` : Configuration Docker Compose pour le déploiement de l'instance WordPress.
+    -   `nginx/default.conf` : Configuration du serveur web Nginx.
+    -   `nginx/Dockerfile` : Dockerfile pour la construction de l'image Nginx.
 
 ### Commandes Docker
 
-**Déploiement:**
+**Déploiement :**
 
--   `docker ps -a`  : Liste tous les conteneurs Docker
--   `docker compose up -d`  : démarre les conteneurs Docker
--   `docker compose down -v`  : arrête les conteneurs Docker et supprime les volumes associés.
--   `docker image prune -a`  : supprime toutes les images Docker inutilisées (y compris les images intermédiaires).
--   `docker volume prune`  : supprime tous les volumes Docker inutilisés.
+-   `docker ps -a` : Liste tous les conteneurs Docker.
+-   `docker compose up -d` : Démarre les conteneurs Docker.
+-   `docker compose down -v` : Arrête les conteneurs Docker et supprime les volumes associés.
+-   `docker image prune -a` : Supprime toutes les images Docker inutilisées (y compris les images intermédiaires).
+-   `docker volume prune` : Supprime tous les volumes Docker inutilisés.
 
-**Commande auxiliaire :**
--   `docker rmi $(docker images -f "dangling=true" -q)`  : supprime toutes les images Docker intermédiaires (aussi appelées "dangling images"). La commande  `docker images -f "dangling=true" -q`  récupère les ID d'images intermédiaires, qui sont ensuite passés en tant qu'arguments à la commande  `docker rmi`.
-- `docker system prune` : Supprime tous les objets sur docker.
+**Commandes auxiliaires :**
+
+-   `docker rmi $(docker images -f "dangling=true" -q)` : Supprime toutes les images Docker intermédiaires ("dangling images").
+-   `docker system prune` : Supprime tous les objets Docker inutilisés.
