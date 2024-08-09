@@ -1,17 +1,36 @@
 global:
   resolve_timeout: 5m
+  smtp_hello: 'example.com'
 
 route:
   group_by: ['alertname']
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 1h
-  receiver: 'slack'
+  receiver: 'email-notifications'
+  routes:
+    - match:
+        alertname: "TestAlert"
+      receiver: "email-notifications"
+      continue: true
 
 receivers:
-  - name: 'slack'
-    slack_configs:
-      - api_url: 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'
-        channel: '#alerts'
-        send_resolved: true
+  - name: 'email-notifications'
+    email_configs:
+      - to: 'bouzidi.idris42@gmail.com'
+        from: 'ne-pas-repondre@veldes.fr'
+        smarthost: 'mail.smtp2go.com:587'
+        auth_username: 'veldes.fr'
+        auth_identity: 'veldes.fr'
+        auth_password: '938o3hGMmDaXNZFV'
+        require_tls: true
+          #        tls_config:
+          #          insecure_skip_verify: true
+
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
 
