@@ -74,6 +74,10 @@ COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
 COPY 30-tune-worker-processes.sh /docker-entrypoint.d
 # Copy custom Nginx configuration
 COPY default.conf /etc/nginx/conf.d/default.conf
+#Copy certs and key
+COPY nginx.crt /etc/ssl/certs/nginx.crt
+COPY private_key_nginx.key /etc/ssl/private/private_key_nginx.key
+
 
 # Remove symbolic links and create log files
 RUN rm /var/log/nginx/access.log /var/log/nginx/error.log && \
