@@ -1,64 +1,43 @@
 # Projet : MadCoffee
 
-## Mise en place de site web Wordpress
+## Mise en place de site web WordPress et de la plateforme de surveillance SIEM
 
-**Résponsable**
+**Responsables**
 - Idris BOUZIDI
 - Benoit JACQUET
 
 ### Description
 
-Ce projet permet de déployer une instance WordPress pour MadCoffee en utilisant Docker et Docker Compose. Il comprend deux répertoires principaux :
+Ce projet permet de déployer une instance WordPress pour MadCoffee ainsi qu'une plateforme de surveillance SIEM en utilisant Docker et Docker Compose. Le projet est divisé en deux parties principales :
 
--   **`siem`** : Contient la configuration et le déploiement pour les outils de surveillance.
--   **`webapp`** : Contient la configuration et le déploiement pour l'instance WordPress.
+- **`webapp`** : Contient la configuration et le déploiement de l'instance WordPress.
+- **`siem`** : Contient la configuration et le déploiement des outils de surveillance (Grafana, Prometheus, Loki, etc.).
 
-### Structure du Projet
+### Services et Ports 
+| Machine | Service | Port | SSL | Domaine | 
+| --- | --- | --- | --- | --- | 
+| SIEM | Grafana | 3000 | Non | grafana.alderson.projet.filiere.info | 
+| SIEM | Loki | 3100 | Non | N/A | 
+| SIEM | Promtail | 9080 | Non | N/A | 
+| SIEM | Prometheus | 9090 | Non | N/A | 
+| SIEM | Alertmanager | 9093 | Non | N/A | 
+| SIEM | Node-Exporter | 9100 | Non | N/A | 
+| SIEM | cAdvisor | 8080 | Non | N/A | 
+| WebApp | WordPress | 9000 | Oui | madcoffee.alderson.projet.filiere.info | 
+| WebApp | Nginx (SSL) | 443 | Oui | madcoffee.alderson.projet.filiere.info | 
+| WebApp | Nginx (HTTP) | 80 | Non | madcoffee.alderson.projet.filiere.info | 
 
-**Racine du projet :**
-~~~
-├── siem
-│   ├── config
-│   │   ├── grafana-datasources.yml
-│   │   ├── loki.yaml
-│   │   └── promtail.yaml
-│   └── docker-compose.yaml
-└── webapp
-    ├── config
-    │   └── promtail.yaml
-    ├── docker-compose.yaml
-    ├── nginx
-    │   ├── default.conf
-    │   └── Dockerfile
-    └── README.md` 
-~~~
 ### Démarrage
 
-Ajoutez la ligne suivante au fichier `hosts` de la machine hôte pour la redirection :
+Ajoutez les lignes suivantes au fichier `hosts` de la machine hôte pour la redirection :
 
--   `2a03:5840:111:1024:58:87ff:fe9b:1d95 wordpress.local`
+-   `2a03:5840:111:1024:58:87ff:fe9b:1d95 madcoffee.alderson.projet.filiere.info`
+-   `2a03:5840:111:1024:9b:eff:feae:a039 grafana.alderson.projet.filiere.info`
 
-Accédez au site WordPress via : [wordpress.local](http://wordpress.local/)
+Accédez aux services via les domaines configurés :
 
-Connectez-vous avec :
-
--   **Utilisateur** : `user0`
--   **Mot de passe** : `P@ssw0rd`
-
-### Contenu des Répertoires
-
--   **`siem`** :
-    
-    -   `config/grafana-datasources.yml` : Configuration des sources de données pour Grafana.
-    -   `config/loki.yaml` : Configuration de Loki pour la collecte des logs.
-    -   `config/promtail.yaml` : Configuration de Promtail pour l'envoi des logs à Loki.
-    -   `docker-compose.yaml` : Configuration Docker Compose pour le déploiement des outils de surveillance.
--   **`webapp`** :
-    
-    -   `config/promtail.yaml` : Configuration de Promtail pour l'envoi des logs à Loki.
-    -   `docker-compose.yaml` : Configuration Docker Compose pour le déploiement de l'instance WordPress.
-    -   `nginx/default.conf` : Configuration du serveur web Nginx.
-    -   `nginx/Dockerfile` : Dockerfile pour la construction de l'image Nginx.
+-   **WordPress** : [https://madcoffee.alderson.projet.filiere.info](https://madcoffee.alderson.projet.filiere.info)
+-   **Grafana** : [https://grafana.alderson.projet.filiere.info](https://grafana.alderson.projet.filiere.info)
 
 ### Commandes Docker
 
