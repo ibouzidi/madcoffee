@@ -1,0 +1,7 @@
+{
+    email bouzidi.idris@hotmail.fr
+}
+grafana.alderson.projet.filiere.info {
+    reverse_proxy grafana:3000
+}
+
